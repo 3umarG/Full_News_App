@@ -1,6 +1,6 @@
 package com.example.newsapp.data.remote
 
-import com.example.newsapp.constants.Constants
+import com.example.newsapp.utils.constants.Constants
 import com.example.newsapp.models.NewsResponse
 import retrofit2.Response
 import retrofit2.http.GET

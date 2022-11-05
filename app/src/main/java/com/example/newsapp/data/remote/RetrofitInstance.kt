@@ -1,6 +1,6 @@
 package com.example.newsapp.data.remote
 
-import com.example.newsapp.constants.Constants
+import com.example.newsapp.utils.constants.Constants
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
