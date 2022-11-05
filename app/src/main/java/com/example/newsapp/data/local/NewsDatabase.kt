@@ -27,7 +27,7 @@ abstract class NewsDatabase : RoomDatabase() {
             else {
                 synchronized(LOCK){
                     val newInst = Room.databaseBuilder(
-                        context ,
+                        context.applicationContext ,
                         NewsDatabase::class.java ,
                         "articles_db"
                     ).build()

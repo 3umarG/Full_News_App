@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.newsapp.R
 import com.example.newsapp.models.Article
 
-class NewsRecyclerAdapter(private val listener: OnItemClickListener) :
+class NewsRecyclerAdapter :
     RecyclerView.Adapter<NewsRecyclerAdapter.NewsViewHolder>() {
 
     private val differCallback = object : DiffUtil.ItemCallback<Article>() {
@@ -53,9 +53,6 @@ class NewsRecyclerAdapter(private val listener: OnItemClickListener) :
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         holder.bind(differ.currentList[position])
-        holder.itemView.setOnClickListener {
-            listener.onItemClick(differ.currentList[position])
-        }
     }
 
     override fun getItemCount(): Int {
