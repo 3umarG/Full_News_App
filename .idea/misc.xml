@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/android/KotlinProjects/NewsApp/app/src/main/res/drawable/ic_error.xml" value="0.193" />
+        <entry key="..\:/android/KotlinProjects/NewsApp/app/src/main/res/drawable/ic_favorite.xml" value="0.193" />
         <entry key="..\:/android/KotlinProjects/NewsApp/app/src/main/res/drawable/ic_favorites.xml" value="0.193" />
         <entry key="..\:/android/KotlinProjects/NewsApp/app/src/main/res/drawable/ic_search.xml" value="0.193" />
         <entry key="..\:/android/KotlinProjects/NewsApp/app/src/main/res/drawable/progress_animation.xml" value="0.1815" />

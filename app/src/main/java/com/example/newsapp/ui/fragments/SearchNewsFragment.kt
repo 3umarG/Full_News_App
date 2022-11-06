@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.R
 import com.example.newsapp.adapters.NewsRecyclerAdapter
@@ -52,6 +53,11 @@ class SearchNewsFragment : Fragment() {
                     }
                 }
             }
+        }
+        newsRecyclerAdapter.setOnItemClickListener { article ->
+            val action =
+                SearchNewsFragmentDirections.actionSearchNewsFragmentToArticleFragment(article)
+            findNavController().navigate(action)
         }
         newsViewModel.searchNews.observe(viewLifecycleOwner) { resource ->
             when (resource) {

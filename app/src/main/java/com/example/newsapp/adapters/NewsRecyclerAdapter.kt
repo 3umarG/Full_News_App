@@ -53,7 +53,13 @@ class NewsRecyclerAdapter :
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-        holder.bind(differ.currentList[position])
+        val article = differ.currentList[position]
+        holder.bind(article)
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let {
+                it(article)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
@@ -63,6 +69,13 @@ class NewsRecyclerAdapter :
 
     interface OnItemClickListener {
         fun onItemClick(article: Article)
+    }
+
+    // This Lambda Expression return Void
+    private var onItemClickListener: ((Article) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (Article) -> Unit) {
+        onItemClickListener = listener
     }
 
 }
