@@ -40,6 +40,7 @@ class NewsRecyclerAdapter :
             tvSource.text = article.source.name
             tvPublishedAt.text = article.publishedAt
             Glide.with(itemView).load(article.urlToImage).placeholder(R.drawable.progress_animation)
+                .error(R.drawable.ic_error)
                 .into(ivArticleImage)
         }
 

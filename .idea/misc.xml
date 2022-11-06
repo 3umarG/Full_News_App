@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/android/KotlinProjects/NewsApp/app/src/main/res/drawable/ic_error.xml" value="0.193" />
         <entry key="..\:/android/KotlinProjects/NewsApp/app/src/main/res/drawable/ic_favorites.xml" value="0.193" />
         <entry key="..\:/android/KotlinProjects/NewsApp/app/src/main/res/drawable/ic_search.xml" value="0.193" />
         <entry key="..\:/android/KotlinProjects/NewsApp/app/src/main/res/drawable/progress_animation.xml" value="0.1815" />
@@ -11,7 +12,7 @@
         <entry key="..\:/android/KotlinProjects/NewsApp/app/src/main/res/layout/fragment_article.xml" value="0.1331521739130435" />
         <entry key="..\:/android/KotlinProjects/NewsApp/app/src/main/res/layout/fragment_breaking_news.xml" value="0.1331521739130435" />
         <entry key="..\:/android/KotlinProjects/NewsApp/app/src/main/res/layout/fragment_saved_news.xml" value="0.1331521739130435" />
-        <entry key="..\:/android/KotlinProjects/NewsApp/app/src/main/res/layout/fragment_search_news.xml" value="0.25" />
+        <entry key="..\:/android/KotlinProjects/NewsApp/app/src/main/res/layout/fragment_search_news.xml" value="0.2" />
         <entry key="..\:/android/KotlinProjects/NewsApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18489583333333334" />
       </map>
     </option>
