@@ -10,7 +10,7 @@ import com.example.newsapp.models.Article
 
 @Database(
     entities = [Article::class],
-    version = 1,
+    version = 2,
 )
 @TypeConverters(Converters::class)
 abstract class NewsDatabase : RoomDatabase() {
@@ -20,17 +20,17 @@ abstract class NewsDatabase : RoomDatabase() {
     companion object {
         @Volatile
         private var INSTANCE: NewsDatabase? = null
-        private val LOCK  = Any()
+        private val LOCK = Any()
 
         fun createDatabase(context: Context): NewsDatabase {
             if (INSTANCE != null) return INSTANCE!!
             else {
-                synchronized(LOCK){
+                synchronized(LOCK) {
                     val newInst = Room.databaseBuilder(
-                        context.applicationContext ,
-                        NewsDatabase::class.java ,
+                        context.applicationContext,
+                        NewsDatabase::class.java,
                         "articles_db"
-                    ).build()
+                    ).fallbackToDestructiveMigration().build()
 
                     INSTANCE = newInst
                     return newInst

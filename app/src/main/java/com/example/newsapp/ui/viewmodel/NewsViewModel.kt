@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.newsapp.models.Article
 import com.example.newsapp.models.NewsResponse
 import com.example.newsapp.repository.NewsRepository
 import com.example.newsapp.utils.Resource
@@ -33,13 +34,22 @@ class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
     }
 
 
-    fun searchNews(query : String) = viewModelScope.launch {
+    fun searchNews(query: String) = viewModelScope.launch {
         searchNewsLiveData.postValue(Resource.Loading())
-        val searchResponse = repository.searchNews(query , searchPage)
+        val searchResponse = repository.searchNews(query, searchPage)
 
         searchNewsLiveData.postValue(handleResponseSearchingNews(searchResponse))
     }
 
+    fun insertArticle(article: Article) = viewModelScope.launch {
+        repository.insertArticle(article)
+    }
+
+    fun deleteArticle(article: Article) = viewModelScope.launch {
+        repository.deleteArticle(article)
+    }
+
+    fun getAllArticles(): LiveData<List<Article>> = repository.getAllSaved()
 
     private fun handleResponseBreakingNews(response: Response<NewsResponse>): Resource<NewsResponse> {
         if (response.isSuccessful) {

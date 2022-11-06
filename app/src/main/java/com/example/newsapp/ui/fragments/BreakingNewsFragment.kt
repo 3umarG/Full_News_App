@@ -57,8 +57,13 @@ class BreakingNewsFragment : Fragment() {
         }
 
         newsRecyclerAdapter.setOnItemClickListener { article ->
-            val actions = BreakingNewsFragmentDirections.actionBreakingNewsFragmentToArticleFragment(article)
-            findNavController().navigate(actions)
+            val bundle = Bundle().apply {
+                putSerializable("article", article)
+            }
+            findNavController().navigate(
+                R.id.action_breakingNewsFragment_to_articleFragment,
+                bundle
+            )
         }
     }
 

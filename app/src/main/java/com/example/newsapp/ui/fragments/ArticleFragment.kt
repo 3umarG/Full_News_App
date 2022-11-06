@@ -10,11 +10,12 @@ import androidx.navigation.fragment.navArgs
 import com.example.newsapp.databinding.FragmentArticleBinding
 import com.example.newsapp.ui.viewmodel.NewsViewModel
 import com.example.newsapp.utils.MainActivity
+import com.google.android.material.snackbar.Snackbar
 
 class ArticleFragment : Fragment() {
     private lateinit var binding: FragmentArticleBinding
     private lateinit var newsViewModel: NewsViewModel
-    private val args by navArgs<ArticleFragmentArgs>()
+    private val args: ArticleFragmentArgs by navArgs()
 
 
     override fun onCreateView(
@@ -31,9 +32,14 @@ class ArticleFragment : Fragment() {
 
         newsViewModel = (activity as MainActivity).newsViewModel
         val article = args.article
+
         binding.webView.apply {
             webViewClient = WebViewClient()
-            loadUrl(article.url)
+            article.url?.let { loadUrl(it) }
+        }
+        binding.fab.setOnClickListener {
+            newsViewModel.insertArticle(article)
+            Snackbar.make(it, "Saved Article Successfully", Snackbar.LENGTH_SHORT).show()
         }
     }
 

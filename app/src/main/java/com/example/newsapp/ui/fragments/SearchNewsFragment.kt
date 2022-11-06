@@ -55,9 +55,13 @@ class SearchNewsFragment : Fragment() {
             }
         }
         newsRecyclerAdapter.setOnItemClickListener { article ->
-            val action =
-                SearchNewsFragmentDirections.actionSearchNewsFragmentToArticleFragment(article)
-            findNavController().navigate(action)
+            val bundle = Bundle().apply {
+                putSerializable("article", article)
+            }
+            findNavController().navigate(
+                R.id.action_searchNewsFragment_to_articleFragment,
+                bundle
+            )
         }
         newsViewModel.searchNews.observe(viewLifecycleOwner) { resource ->
             when (resource) {
