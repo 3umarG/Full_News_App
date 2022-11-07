@@ -30,6 +30,8 @@ class ArticleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var isAdded = false
+
         newsViewModel = (activity as MainActivity).newsViewModel
         val article = args.article
 
@@ -38,8 +40,13 @@ class ArticleFragment : Fragment() {
             article.url?.let { loadUrl(it) }
         }
         binding.fab.setOnClickListener {
-            newsViewModel.insertArticle(article)
-            Snackbar.make(it, "Saved Article Successfully", Snackbar.LENGTH_SHORT).show()
+            if (!isAdded) {
+                newsViewModel.insertArticle(article)
+                Snackbar.make(it, "Saved Article Successfully", Snackbar.LENGTH_SHORT).show()
+                isAdded = true
+            }else {
+                Snackbar.make(it, "Article already added !!!", Snackbar.LENGTH_SHORT).show()
+            }
         }
     }
 

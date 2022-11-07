@@ -38,7 +38,15 @@ class PagingAdapter : PagingDataAdapter<Article, PagingAdapter.NewsViewHolder>(C
         val article = getItem(position)
         if (article != null) {
             holder.bind(article)
+
+            holder.itemView.setOnClickListener {
+                onItemClickListener?.let {
+                    it(article)
+                }
+            }
         }
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
@@ -55,5 +63,12 @@ class PagingAdapter : PagingDataAdapter<Article, PagingAdapter.NewsViewHolder>(C
                 return oldItem == newItem
             }
         }
+    }
+
+    // This Lambda Expression return Void
+    private var onItemClickListener: ((Article) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (Article) -> Unit) {
+        onItemClickListener = listener
     }
 }

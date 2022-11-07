@@ -130,6 +130,16 @@ class BreakingNewsFragment : Fragment() {
             handleError(loadStates)
 
         }
+
+        pagingAdapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putSerializable("article", it)
+            }
+            findNavController().navigate(
+                R.id.action_breakingNewsFragment_to_articleFragment,
+                bundle
+            )
+        }
     }
 
     private fun errorState() {
