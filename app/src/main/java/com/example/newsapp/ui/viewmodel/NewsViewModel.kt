@@ -4,10 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.newsapp.models.Article
 import com.example.newsapp.models.NewsResponse
 import com.example.newsapp.repository.NewsRepository
 import com.example.newsapp.utils.Resource
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -22,8 +25,10 @@ class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
     var searchNews: LiveData<Resource<NewsResponse>> = searchNewsLiveData
     private var searchPage = 1
 
+    val pagingNews: Flow<PagingData<Article>> = repository.getNewsPaging().cachedIn(viewModelScope)
+
     init {
-        getBreakingNews("eg")
+//        getBreakingNews("eg")
     }
 
     fun getBreakingNews(country: String) = viewModelScope.launch {

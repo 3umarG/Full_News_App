@@ -6,19 +6,27 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.R
 import com.example.newsapp.adapters.NewsRecyclerAdapter
+import com.example.newsapp.adapters.PagingAdapter
 import com.example.newsapp.databinding.FragmentBreakingNewsBinding
 import com.example.newsapp.ui.viewmodel.NewsViewModel
 import com.example.newsapp.utils.MainActivity
 import com.example.newsapp.utils.Resource
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class BreakingNewsFragment : Fragment() {
     private lateinit var binding: FragmentBreakingNewsBinding
     private lateinit var newsViewModel: NewsViewModel
-    private lateinit var newsRecyclerAdapter: NewsRecyclerAdapter
+    private val pagingAdapter by lazy { PagingAdapter() }
+//    private lateinit var newsRecyclerAdapter: NewsRecyclerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +43,15 @@ class BreakingNewsFragment : Fragment() {
 
         newsViewModel = (activity as MainActivity).newsViewModel
         setupRecyclerView()
+        retryButtonListener()
 
+        lifecycleScope.launch {
+            newsViewModel.pagingNews.collectLatest { pagingArticles ->
+                pagingAdapter.submitData(pagingArticles)
+            }
+        }
+
+/*
         newsViewModel.breakingNews.observe(viewLifecycleOwner) { resources ->
             when (resources) {
                 is Resource.Success -> {
@@ -65,15 +81,29 @@ class BreakingNewsFragment : Fragment() {
                 bundle
             )
         }
+
+ */
     }
 
+    private fun retryButtonListener() {
+        binding.buttonRetry.setOnClickListener {
+            pagingAdapter.retry()
+            pagingAdapter.addLoadStateListener { states ->
+                if (states.source.refresh is LoadState.Error){
+                    Toast.makeText(context , "There is no internet connection yet !!",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     private fun setupRecyclerView() {
-        newsRecyclerAdapter = NewsRecyclerAdapter()
+//        newsRecyclerAdapter = NewsRecyclerAdapter()
+
         binding.recyclerViewBreakingNews.apply {
-            adapter = newsRecyclerAdapter
+            adapter = pagingAdapter
             layoutManager = LinearLayoutManager(activity)
         }
+        adapterStateListener()
     }
 
     private fun hideProgressBar() {
@@ -82,6 +112,51 @@ class BreakingNewsFragment : Fragment() {
 
     private fun showProgressBar() {
         binding.paginationProgressBar.visibility = View.VISIBLE
+    }
+
+    private fun adapterStateListener() {
+        pagingAdapter.addLoadStateListener { loadStates ->
+            when (loadStates.source.refresh) {
+                is LoadState.Loading -> {
+                    loadingState()
+                }
+                is LoadState.NotLoading -> {
+                    notLoadingState()
+                }
+                is LoadState.Error -> {
+                    errorState()
+                }
+            }
+            handleError(loadStates)
+
+        }
+    }
+
+    private fun errorState() {
+        binding.recyclerViewBreakingNews.visibility = View.INVISIBLE
+        binding.paginationProgressBar.visibility = View.INVISIBLE
+        binding.buttonRetry.visibility = View.VISIBLE
+    }
+
+    private fun notLoadingState() {
+        binding.recyclerViewBreakingNews.visibility = View.VISIBLE
+        binding.paginationProgressBar.visibility = View.INVISIBLE
+        binding.buttonRetry.visibility = View.INVISIBLE
+    }
+
+    private fun loadingState() {
+        binding.recyclerViewBreakingNews.visibility = View.INVISIBLE
+        binding.paginationProgressBar.visibility = View.VISIBLE
+        binding.buttonRetry.visibility = View.INVISIBLE
+    }
+
+    private fun handleError(loadState: CombinedLoadStates) {
+        val errorState = loadState.source.append as? LoadState.Error
+            ?: loadState.source.prepend as? LoadState.Error
+
+        errorState?.let {
+            Toast.makeText(context, "No Internet Connection", Toast.LENGTH_LONG).show()
+        }
     }
 
 }
