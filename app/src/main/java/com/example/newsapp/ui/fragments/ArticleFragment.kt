@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.navigation.fragment.navArgs
 import com.example.newsapp.databinding.FragmentArticleBinding
@@ -35,19 +36,42 @@ class ArticleFragment : Fragment() {
         newsViewModel = (activity as MainActivity).newsViewModel
         val article = args.article
 
+        showShimmer()
         binding.webView.apply {
-            webViewClient = WebViewClient()
+            webViewClient = object : WebViewClient() {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    super.onPageFinished(view, url)
+                    stopShimmer()
+                }
+            }
             article.url?.let { loadUrl(it) }
         }
+
         binding.fab.setOnClickListener {
             if (!isAdded) {
                 newsViewModel.insertArticle(article)
                 Snackbar.make(it, "Saved Article Successfully", Snackbar.LENGTH_SHORT).show()
                 isAdded = true
-            }else {
+            } else {
                 Snackbar.make(it, "Article already added !!!", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
 
+
+    private fun showShimmer() {
+        binding.shimmerArticle.apply {
+            visibility = View.VISIBLE
+            startShimmer()
+        }
+        binding.webView.visibility = View.INVISIBLE
+    }
+
+    private fun stopShimmer() {
+        binding.shimmerArticle.apply {
+            visibility = View.INVISIBLE
+            stopShimmer()
+        }
+        binding.webView.visibility = View.VISIBLE
+    }
 }
