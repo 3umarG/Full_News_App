@@ -77,7 +77,12 @@ class SavedNewsFragment : Fragment() {
 
     private fun observing() {
         newsViewModel.getAllArticles().observe(viewLifecycleOwner) { articles ->
-            newsRecyclerAdapter.differ.submitList(articles)
+            if (articles.isEmpty()) {
+                showEmptyImage()
+            } else {
+                hideEmptyImage()
+                newsRecyclerAdapter.differ.submitList(articles)
+            }
         }
     }
 
@@ -91,6 +96,14 @@ class SavedNewsFragment : Fragment() {
                 bundle
             )
         }
+    }
+
+    private fun hideEmptyImage() {
+        binding.imageEmpty.visibility = View.INVISIBLE
+    }
+
+    private fun showEmptyImage() {
+        binding.imageEmpty.visibility = View.VISIBLE
     }
 
     private fun swipe(viewHolder: RecyclerView.ViewHolder) {

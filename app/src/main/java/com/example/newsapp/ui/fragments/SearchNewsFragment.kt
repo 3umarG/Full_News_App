@@ -66,7 +66,7 @@ class SearchNewsFragment : Fragment() {
         newsViewModel.searchNews.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
-                    showProgressBar()
+                    showShimmer()
                     hideRV()
                     hideImage()
                 }
@@ -77,7 +77,7 @@ class SearchNewsFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     resource.data?.let { newsResponse ->
-                        hideProgressBar()
+                        hideShimmer()
                         if (newsResponse.articles.isEmpty()) {
                             showImage()
                             hideRV()
@@ -101,12 +101,18 @@ class SearchNewsFragment : Fragment() {
         }
     }
 
-    private fun hideProgressBar() {
-        binding.paginationProgressBarSearch.visibility = View.INVISIBLE
+    private fun hideShimmer() {
+        binding.shimmerSearch.apply {
+            stopShimmer()
+            visibility = View.INVISIBLE
+        }
     }
 
-    private fun showProgressBar() {
-        binding.paginationProgressBarSearch.visibility = View.VISIBLE
+    private fun showShimmer() {
+        binding.shimmerSearch.apply {
+            visibility = View.VISIBLE
+            startShimmer()
+        }
     }
 
     private fun hideRV() {

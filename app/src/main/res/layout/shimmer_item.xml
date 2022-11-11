@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/ivShimmer"
+        android:layout_width="160dp"
+        android:layout_height="90dp"
+        android:background="@color/shimmer_color"
+        android:contentDescription="Image Article"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/tvSourceShimmer"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/shimmer_color"
+        android:contentDescription="I"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivShimmer" />
+
+    <ImageView
+        android:id="@+id/tvTitleShimmer"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:background="@color/shimmer_color"
+        android:contentDescription="Hb"
+        app:layout_constraintLeft_toRightOf="@+id/ivShimmer"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/tvDescriptionShimmer"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/shimmer_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivShimmer"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitleShimmer" />
+
+    <ImageView
+        android:id="@+id/tvPublishedAtShimmer"
+        android:layout_width="0dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/shimmer_color"
+        android:contentDescription="BB"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toEndOf="@+id/ivShimmer"
+        app:layout_constraintTop_toBottomOf="@+id/tvDescriptionShimmer" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

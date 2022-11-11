@@ -89,8 +89,12 @@ class BreakingNewsFragment : Fragment() {
         binding.buttonRetry.setOnClickListener {
             pagingAdapter.retry()
             pagingAdapter.addLoadStateListener { states ->
-                if (states.source.refresh is LoadState.Error){
-                    Toast.makeText(context , "There is no internet connection yet !!",Toast.LENGTH_SHORT).show()
+                if (states.source.refresh is LoadState.Error) {
+                    Toast.makeText(
+                        context,
+                        "There is no internet connection yet !!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -106,13 +110,6 @@ class BreakingNewsFragment : Fragment() {
         adapterStateListener()
     }
 
-    private fun hideProgressBar() {
-        binding.paginationProgressBar.visibility = View.INVISIBLE
-    }
-
-    private fun showProgressBar() {
-        binding.paginationProgressBar.visibility = View.VISIBLE
-    }
 
     private fun adapterStateListener() {
         pagingAdapter.addLoadStateListener { loadStates ->
@@ -144,19 +141,28 @@ class BreakingNewsFragment : Fragment() {
 
     private fun errorState() {
         binding.recyclerViewBreakingNews.visibility = View.INVISIBLE
-        binding.paginationProgressBar.visibility = View.INVISIBLE
+        binding.shimmer.apply {
+            stopShimmer()
+            visibility = View.INVISIBLE
+        }
         binding.buttonRetry.visibility = View.VISIBLE
     }
 
     private fun notLoadingState() {
         binding.recyclerViewBreakingNews.visibility = View.VISIBLE
-        binding.paginationProgressBar.visibility = View.INVISIBLE
+        binding.shimmer.apply {
+            stopShimmer()
+            visibility = View.INVISIBLE
+        }
         binding.buttonRetry.visibility = View.INVISIBLE
     }
 
     private fun loadingState() {
         binding.recyclerViewBreakingNews.visibility = View.INVISIBLE
-        binding.paginationProgressBar.visibility = View.VISIBLE
+        binding.shimmer.apply {
+            visibility = View.VISIBLE
+            startShimmer()
+        }
         binding.buttonRetry.visibility = View.INVISIBLE
     }
 
