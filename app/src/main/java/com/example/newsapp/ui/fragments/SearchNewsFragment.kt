@@ -15,6 +15,7 @@ import com.example.newsapp.databinding.FragmentSearchNewsBinding
 import com.example.newsapp.ui.viewmodel.NewsViewModel
 import com.example.newsapp.utils.MainActivity
 import com.example.newsapp.utils.Resource
+import com.example.newsapp.utils.constants.Constants
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -69,15 +70,23 @@ class SearchNewsFragment : Fragment() {
                     showShimmer()
                     hideRV()
                     hideImage()
+                    hideLottie()
                 }
                 is Resource.Error -> {
                     resource.message?.let {
                         Log.e("ERROR :::", it)
                     }
+                    if (resource.message == Constants.NO_INTERNET_CONNECTION) {
+                        hideShimmer()
+                        hideRV()
+                        hideImage()
+                        showLottie()
+                    }
                 }
                 is Resource.Success -> {
                     resource.data?.let { newsResponse ->
                         hideShimmer()
+                        hideLottie()
                         if (newsResponse.articles.isEmpty()) {
                             showImage()
                             hideRV()
@@ -113,6 +122,14 @@ class SearchNewsFragment : Fragment() {
             visibility = View.VISIBLE
             startShimmer()
         }
+    }
+
+    private fun showLottie() {
+        binding.lottieNoInternetConnection.visibility = View.VISIBLE
+    }
+
+    private fun hideLottie() {
+        binding.lottieNoInternetConnection.visibility = View.INVISIBLE
     }
 
     private fun hideRV() {

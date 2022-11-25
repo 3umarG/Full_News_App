@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         newsRepository = NewsRepository(NewsDatabase.createDatabase(this))
-        newsViewModelFactory = NewsViewModelFactory(newsRepository)
+        newsViewModelFactory = NewsViewModelFactory(newsRepository, applicationContext)
         newsViewModel = ViewModelProvider(this, newsViewModelFactory)[NewsViewModel::class.java]
 
 
