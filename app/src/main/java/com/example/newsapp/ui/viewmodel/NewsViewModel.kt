@@ -33,7 +33,7 @@ class NewsViewModel(private val repository: NewsRepository, private val context:
 
     val pagingNews: Flow<PagingData<Article>> = repository.getNewsPaging().cachedIn(viewModelScope)
 
-    private var connectivityObserver: ConnectivityObserver = InternetConnectionObserver(context)
+    val connectivityObserver: ConnectivityObserver = InternetConnectionObserver(context)
 
     init {
 //        getBreakingNews("eg")

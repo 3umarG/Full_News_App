@@ -7,11 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.example.newsapp.databinding.FragmentArticleBinding
+import com.example.newsapp.network.ConnectivityObserver
 import com.example.newsapp.ui.viewmodel.NewsViewModel
 import com.example.newsapp.utils.MainActivity
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
 class ArticleFragment : Fragment() {
     private lateinit var binding: FragmentArticleBinding
@@ -36,26 +39,46 @@ class ArticleFragment : Fragment() {
         newsViewModel = (activity as MainActivity).newsViewModel
         val article = args.article
 
-        showShimmer()
-        binding.webView.apply {
-            webViewClient = object : WebViewClient() {
-                override fun onPageFinished(view: WebView?, url: String?) {
-                    super.onPageFinished(view, url)
+        lifecycleScope.launch {
+
+            newsViewModel.connectivityObserver.observe().collect { status ->
+                hideWebView()
+                if (status == ConnectivityObserver.Status.UNAVAILABLE || status == ConnectivityObserver.Status.LOST) {
+                    hideFAB()
                     stopShimmer()
+                    showLottie()
+                } else if (status == ConnectivityObserver.Status.AVAILABLE) {
+                    hideLottie()
+                    showFAB()
+                    showShimmer()
+                    binding.webView.apply {
+                        webViewClient = object : WebViewClient() {
+                            override fun onPageFinished(view: WebView?, url: String?) {
+                                super.onPageFinished(view, url)
+                                stopShimmer()
+                                showWebView()
+                            }
+                        }
+                        article.url?.let { loadUrl(it) }
+                    }
+
+                    binding.fab.setOnClickListener {
+                        if (!isAdded) {
+                            newsViewModel.insertArticle(article)
+                            Snackbar.make(it, "Saved Article Successfully", Snackbar.LENGTH_SHORT)
+                                .show()
+                            isAdded = true
+                        } else {
+                            Snackbar.make(it, "Article already added !!!", Snackbar.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
                 }
+
             }
-            article.url?.let { loadUrl(it) }
         }
 
-        binding.fab.setOnClickListener {
-            if (!isAdded) {
-                newsViewModel.insertArticle(article)
-                Snackbar.make(it, "Saved Article Successfully", Snackbar.LENGTH_SHORT).show()
-                isAdded = true
-            } else {
-                Snackbar.make(it, "Article already added !!!", Snackbar.LENGTH_SHORT).show()
-            }
-        }
+
     }
 
 
@@ -64,7 +87,6 @@ class ArticleFragment : Fragment() {
             visibility = View.VISIBLE
             startShimmer()
         }
-        binding.webView.visibility = View.INVISIBLE
     }
 
     private fun stopShimmer() {
@@ -72,6 +94,29 @@ class ArticleFragment : Fragment() {
             visibility = View.INVISIBLE
             stopShimmer()
         }
+    }
+
+    private fun showFAB() {
+        binding.fab.visibility = View.VISIBLE
+    }
+
+    private fun hideFAB() {
+        binding.fab.visibility = View.INVISIBLE
+    }
+
+    private fun hideWebView() {
+        binding.webView.visibility = View.INVISIBLE
+    }
+
+    private fun showWebView() {
         binding.webView.visibility = View.VISIBLE
+    }
+
+    private fun hideLottie() {
+        binding.lottieNoArticle.visibility = View.INVISIBLE
+    }
+
+    private fun showLottie() {
+        binding.lottieNoArticle.visibility = View.VISIBLE
     }
 }
