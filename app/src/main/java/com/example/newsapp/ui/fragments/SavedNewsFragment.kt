@@ -99,11 +99,11 @@ class SavedNewsFragment : Fragment() {
     }
 
     private fun hideEmptyImage() {
-        binding.imageEmpty.visibility = View.INVISIBLE
+        binding.lottieNoSaved.visibility = View.INVISIBLE
     }
 
     private fun showEmptyImage() {
-        binding.imageEmpty.visibility = View.VISIBLE
+        binding.lottieNoSaved.visibility = View.VISIBLE
     }
 
     private fun swipe(viewHolder: RecyclerView.ViewHolder) {
