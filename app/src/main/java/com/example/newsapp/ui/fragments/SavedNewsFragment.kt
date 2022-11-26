@@ -113,9 +113,10 @@ class SavedNewsFragment : Fragment() {
         Snackbar.make(requireView(), "Article Deleted !!", Snackbar.LENGTH_LONG).apply {
             setAction("UNDO") {
                 newsViewModel.insertArticle(article)
+                observing()
+                setupRecyclerView()
             }
-            show()
-        }
+        }.show()
     }
 
 }
